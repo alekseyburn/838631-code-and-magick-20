@@ -50,8 +50,8 @@ var getMaxElement = function (arr) {
   return maxElement;
 };
 
-var generateRandomNumber = function (to) {
-  return Math.floor(Math.random() * to);
+var getRandomNumber = function (max) {
+  return Math.floor(Math.random() * max);
 };
 
 window.renderStatistics = function (ctx, players, times) {
@@ -74,7 +74,7 @@ window.renderStatistics = function (ctx, players, times) {
     if (players[i] === 'Вы') {
       ctx.fillStyle = 'rgba(255, 0, 0, 1)';
     } else {
-      ctx.fillStyle = 'hsl(240, ' + generateRandomNumber(100) + '%, 50%)';
+      ctx.fillStyle = 'hsl(240, ' + getRandomNumber(100) + '%, 50%)';
     }
     ctx.fillRect(CLOUD_X + BAR_GAP + (BAR_GAP + BAR_WIDTH) * i, CLOUD_Y + CLOUD_HEIGHT - BAR_GAP, BAR_WIDTH, -((MAX_BAR_HEIGHT * times[i]) / maxTime));
   }
