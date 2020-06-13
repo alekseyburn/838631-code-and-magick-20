@@ -66,7 +66,7 @@ renderWizards();
 
 setupModal.querySelector('.setup-similar').classList.remove('hidden');
 
-function onPopupEscPress(event) {
+function onEscPress(event) {
   if (event.key === 'Escape') {
     event.preventDefault();
     closeSetupModal();
@@ -76,7 +76,7 @@ function onPopupEscPress(event) {
 function onInputFocus(event) {
   if (event.target === setupUserNameField) {
     event.preventDefault();
-    document.removeEventListener('keydown', onPopupEscPress);
+    document.removeEventListener('keydown', onEscPress);
     setupUserNameField.addEventListener('blur', onInputBlur);
   }
 }
@@ -84,7 +84,7 @@ function onInputFocus(event) {
 function onInputBlur(event) {
   if (event.target === setupUserNameField) {
     event.preventDefault();
-    document.addEventListener('keydown', onPopupEscPress);
+    document.addEventListener('keydown', onEscPress);
     setupUserNameField.removeEventListener('blur', onInputBlur);
   }
 }
@@ -92,14 +92,14 @@ function onInputBlur(event) {
 function openSetupModal() {
   setupModal.classList.remove('hidden');
 
-  document.addEventListener('keydown', onPopupEscPress);
+  document.addEventListener('keydown', onEscPress);
   setupUserNameField.addEventListener('focus', onInputFocus);
 }
 
 function closeSetupModal() {
   setupModal.classList.add('hidden');
 
-  document.removeEventListener('keydown', onPopupEscPress);
+  document.removeEventListener('keydown', onEscPress);
   setupUserNameField.removeEventListener('focus', onInputFocus);
 }
 
