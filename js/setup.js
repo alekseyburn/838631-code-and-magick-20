@@ -1,10 +1,10 @@
 'use strict';
 
-var setup = document.querySelector('.setup');
-var setupOpen = document.querySelector('.setup-open');
-var setupClose = document.querySelector('.setup-close');
-var setupUserName = document.querySelector('.setup-user-name');
-var similarListElement = setup.querySelector('.setup-similar-list');
+var setupModal = document.querySelector('.setup');
+var setupOpenButton = document.querySelector('.setup-open');
+var setupCloseButton = document.querySelector('.setup-close');
+var setupUserNameField = document.querySelector('.setup-user-name');
+var similarListElement = setupModal.querySelector('.setup-similar-list');
 var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
 var wizardCoat = document.querySelector('.setup-wizard .wizard-coat');
 var wizardCoatInput = document.querySelector('input[name="coat-color"]');
@@ -64,44 +64,62 @@ function renderWizards() {
 
 renderWizards();
 
-setup.querySelector('.setup-similar').classList.remove('hidden');
+setupModal.querySelector('.setup-similar').classList.remove('hidden');
 
 function onPopupEscPress(event) {
-  if (event.key === 'Escape' && event.target !== setupUserName) { // Не уверен насчет этого решения с event.target.
+  if (event.key === 'Escape') {
     event.preventDefault();
-    closePopup();
+    closeSetupModal();
+  }
+}
+// решил вынести в отдельную логику. по ней будет вопрос на консультации
+function onInputFocus(event) {
+  if (event.target === setupUserNameField) {
+    event.preventDefault();
+    document.removeEventListener('keydown', onPopupEscPress);
+    setupUserNameField.addEventListener('blur', onInputBlur);
   }
 }
 
-function openPopup() {
-  setup.classList.remove('hidden');
+function onInputBlur(event) {
+  if (event.target === setupUserNameField) {
+    event.preventDefault();
+    document.addEventListener('keydown', onPopupEscPress);
+    setupUserNameField.removeEventListener('blur', onInputBlur);
+  }
+}
+
+function openSetupModal() {
+  setupModal.classList.remove('hidden');
 
   document.addEventListener('keydown', onPopupEscPress);
+  setupUserNameField.addEventListener('focus', onInputFocus);
 }
 
-function closePopup() {
-  setup.classList.add('hidden');
+function closeSetupModal() {
+  setupModal.classList.add('hidden');
 
   document.removeEventListener('keydown', onPopupEscPress);
+  setupUserNameField.removeEventListener('focus', onInputFocus);
 }
 
-setupOpen.addEventListener('click', function () {
-  openPopup();
+setupOpenButton.addEventListener('click', function () {
+  openSetupModal();
 });
 
-setupOpen.addEventListener('keydown', function (event) {
+setupOpenButton.addEventListener('keydown', function (event) {
   if (event.key === 'Enter') {
-    openPopup();
+    openSetupModal();
   }
 });
 
-setupClose.addEventListener('click', function () {
-  closePopup();
+setupCloseButton.addEventListener('click', function () {
+  closeSetupModal();
 });
 
-setupClose.addEventListener('keydown', function (event) {
+setupCloseButton.addEventListener('keydown', function (event) {
   if (event.key === 'Enter') {
-    closePopup();
+    closeSetupModal();
   }
 });
 
